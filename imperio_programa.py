@@ -1,3 +1,6 @@
+from enum import Enum
+from abc import ABCMeta, abstractmethod
+
 class Repuesto:
     def __init__(self, nombre, proveedor, cantidad, precio):
         self.nombre = nombre
@@ -44,3 +47,67 @@ class Almacen:
         # Simplificamos la impresión del catálogo
         nombres_piezas = [p.nombre for p in self.catalogo_piezas]
         return "Nombre: "+str(self.nombre)+"\nLocalización: "+str(self.localizacion)+"\nCatálogo de piezas: "+str(nombres_piezas)
+
+
+
+class UnidadCombate(metaclass=ABCMeta):
+    def __init__(self, id_combate, clave_cifrada):
+        self.id_combate = id_combate
+        self.clave_cifrada = clave_cifrada
+    
+    @abstractmethod
+    def obtenerDatos(self):
+        return "Identificador de combate: "+str(self.id_combate)+"\nClave cifrada: "+str(self.clave_cifrada)
+
+class Nave(UnidadCombate):
+    def __init__(self, id_combate, clave_cifrada, nombre, catalogo_piezas):
+        super().__init__(id_combate, clave_cifrada)
+        self.nombre = nombre
+        self.catalogo_piezas = catalogo_piezas # Lista de nombres de piezas según el diagrama/enunciado
+    
+    def añadir_piezas_catalogo(self, nombre_repuesto):
+        if nombre_repuesto in self.catalogo_piezas:
+            print("Esta pieza ya se encuentra en el catálogo")
+            return
+        self.catalogo_piezas.append(nombre_repuesto)
+    
+    def obtenerDatos(self):
+        return super().obtenerDatos() + "\nNombre: " + str(self.nombre) + "\nCatálogo: " + str(self.catalogo_piezas)
+
+class Ubicacion(Enum):
+    ENDOR = 1
+    CUMULO_RAIMOS = 2
+    NEBULOSA_KALIIDA = 3
+
+class EstacionEspacial(Nave):
+    def __init__(self, id_combate, clave_cifrada, nombre, catalogo_piezas, tripulacion, pasaje, ubicacion):
+        super().__init__(id_combate, clave_cifrada, nombre, catalogo_piezas)
+        self.tripulacion = tripulacion
+        self.pasaje = pasaje
+        self.ubicacion = ubicacion
+    
+    def obtenerDatos(self):
+        return super().obtenerDatos()+"\nTripulación: "+str(self.tripulacion)+"\nPasaje: "+str(self.pasaje)+"\nUbicación: "+str(self.ubicacion.name)
+
+class Clase(Enum):
+    EJECUTOR = 1
+    ECLIPSE = 2
+    SOBERANO = 3
+
+class NaveEstelar(Nave):
+    def __init__(self, id_combate, clave_cifrada, nombre, catalogo_piezas, tripulacion, pasaje, clase):
+        super().__init__(id_combate, clave_cifrada, nombre, catalogo_piezas)
+        self.tripulacion = tripulacion
+        self.pasaje = pasaje
+        self.clase = clase
+    
+    def obtenerDatos(self):
+        return super().obtenerDatos()+"\nTripulación: "+str(self.tripulacion)+"\nPasaje: "+str(self.pasaje)+"\nClase: "+str(self.clase.name)
+
+class CazaEstelar(Nave):
+    def __init__(self, id_combate, clave_cifrada, nombre, catalogo_piezas, dotacion):
+        super().__init__(id_combate, clave_cifrada, nombre, catalogo_piezas)
+        self.dotacion = dotacion
+    
+    def obtenerDatos(self):
+        return super().obtenerDatos()+"\nDotación: "+str(self.dotacion)
