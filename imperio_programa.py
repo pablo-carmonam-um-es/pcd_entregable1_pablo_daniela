@@ -13,7 +13,7 @@ class Repuesto:
     def __init__(self, nombre, proveedor, cantidad, precio):
         self.nombre = nombre
         self.proveedor = proveedor
-        self.__cantidad = cantidad # Atributo privado con doble guion bajo
+        self._cantidad = cantidad # Atributo privado con doble guion bajo
         self.precio = precio
     
     def get_cantidad(self):
@@ -25,7 +25,7 @@ class Repuesto:
         self._cantidad += variacion
     
     def obtenerDatos(self):
-        return "Nombre de la pieza: "+str(self.nombre)+"\nProveedor: "+str(self.proveedor)+"\nCantidad: "+str(self.__cantidad)+"\nPrecio: "+str(self.precio)
+        return "Nombre de la pieza: "+str(self.nombre)+"\nProveedor: "+str(self.proveedor)+"\nCantidad: "+str(self._cantidad)+"\nPrecio: "+str(self.precio)
 
 class Almacen:
     def __init__(self, nombre, localizacion):
