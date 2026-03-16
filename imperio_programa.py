@@ -1,6 +1,14 @@
 from enum import Enum
 from abc import ABCMeta, abstractmethod
 
+class StockInsuficienteError(Exception):
+    """Excepción lanzada cuando no hay suficiente stock de un repuesto."""
+    pass
+
+class RepuestoNoEncontradoError(Exception):
+    """Excepción lanzada cuando no se encuentra un repuesto en el almacén."""
+    pass
+
 class Repuesto:
     def __init__(self, nombre, proveedor, cantidad, precio):
         self.nombre = nombre
@@ -12,9 +20,9 @@ class Repuesto:
         return self.__cantidad
     
     def modificar_cantidad(self, variacion):
-        #if self.__cantidad + variacion < 0:
-            #raise StockInsuficienteError(f"No hay suficiente stock para {self.nombre}.")
-        self.__cantidad += variacion
+        if self._cantidad + variacion < 0:
+            raise StockInsuficienteError(f"No hay suficiente stock para {self.nombre}.")
+        self._cantidad += variacion
     
     def obtenerDatos(self):
         return "Nombre de la pieza: "+str(self.nombre)+"\nProveedor: "+str(self.proveedor)+"\nCantidad: "+str(self.__cantidad)+"\nPrecio: "+str(self.precio)
