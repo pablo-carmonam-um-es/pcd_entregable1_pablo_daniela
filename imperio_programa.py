@@ -44,7 +44,7 @@ class Almacen:
         for pieza in self.catalogo_piezas:
             if pieza.nombre == nombre:
                 return pieza
-        #raise RepuestoNoEncontradoError(f"La pieza '{nombre}' no está disponible en este almacén.")
+        raise RepuestoNoEncontradoError(f"La pieza '{nombre}' no está disponible en este almacén.")
     
     def adquirir_pieza(self, nombre, cantidad):
         pieza_encontrada = self.buscar_pieza(nombre)
@@ -55,8 +55,6 @@ class Almacen:
         # Simplificamos la impresión del catálogo
         nombres_piezas = [p.nombre for p in self.catalogo_piezas]
         return "Nombre: "+str(self.nombre)+"\nLocalización: "+str(self.localizacion)+"\nCatálogo de piezas: "+str(nombres_piezas)
-
-
 
 class UnidadCombate(metaclass=ABCMeta):
     def __init__(self, id_combate, clave_cifrada):
@@ -119,3 +117,30 @@ class CazaEstelar(Nave):
     
     def obtenerDatos(self):
         return super().obtenerDatos()+"\nDotación: "+str(self.dotacion)
+
+class Imperio:
+    def __init__(self):
+        self.flota = []
+        self.almacenes = []
+    
+    def añadir_flota(self, nave):
+        for n in self.flota:
+            if n.id_combate == nave.id_combate:
+                print("Ya se encuentra disponible en la flota")
+        self.flota.append(nave)
+	
+    def añadir_almacen(self, almacen):
+        for a in self.almacenes:
+            if a.nombre == almacen.nombre:
+                print("Ya existe este almacén")
+        self.almacenes.append(almacen)
+    
+    def listar_flota(self):
+        cadena = ""
+        for f in self.flota:
+            cadena = cadena+str(f)+"\n"
+
+    def listar_almacenes(self):
+        cadena = ""
+        for a in self.almacenes:
+            cadena = cadena+str(a)+"\n"
